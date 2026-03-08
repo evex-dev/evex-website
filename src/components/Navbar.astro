@@ -1,0 +1,56 @@
+<nav>
+	<div class="logo glitch-hover" data-value="EVEX">EVEX</div>
+	<div class="links">
+		<a href="#" class="glitch-hover" data-value="ABOUT">About</a>
+		<a href="#" class="glitch-hover" data-value="PROJECTS">Projects</a>
+		<a href="#" class="glitch-hover" data-value="JOIN">Join</a>
+	</div>
+</nav>
+
+<style>
+	nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 40px 60px;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		z-index: 100;
+	}
+
+	.logo {
+		font-family: var(--sans);
+		font-weight: 700;
+		font-size: 24px;
+		letter-spacing: -1px;
+	}
+
+	.links {
+		display: flex;
+		gap: 40px;
+	}
+
+	.links a {
+		font-family: var(--mono);
+		text-decoration: none;
+		color: var(--muted);
+		font-size: 11px;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		transition: color 0.3s;
+	}
+
+	.links a:hover {
+		color: white;
+	}
+
+	@media (max-width: 768px) {
+		nav {
+			padding: 30px;
+		}
+		.links {
+			display: none;
+		}
+	}
+</style>

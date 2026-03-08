@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evex Developers</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080808;
+            --accent: #ffffff;
+            --muted: #4a4a4a;
+            --border: #1a1a1a;
+            --mono: 'IBM Plex Mono', monospace;
+            --sans: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+        }
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.04;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .aurora {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background:
+                radial-gradient(circle at 10% 10%, #151525, transparent 50%),
+                radial-gradient(circle at 90% 90%, #101015, transparent 50%);
+            opacity: 0.5;
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.03), transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 60px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: var(--sans);
+            font-weight: 700;
+            font-size: 24px;
+            letter-spacing: -1px;
+        }
+
+        .links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .links a {
+            font-family: var(--mono);
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+
+        .links a:hover {
+            color: white;
+        }
+        .hero {
+            height: 100vh;
+            padding: 0 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+        }
+
+        .hero-content {
+            grid-column: 1 / 3;
+            max-width: 1200px;
+        }
+
+        .hero h1 {
+            font-family: var(--sans);
+            font-size: clamp(60px, 15vw, 200px);
+            font-weight: 700;
+            line-height: 0.85;
+            letter-spacing: -0.05em;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .hero-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .hero-meta p {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            max-width: 300px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            color: white;
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            border-color: white;
+            background: white;
+            color: black;
+        }
+
+        .btn-kbd {
+            opacity: 0.4;
+            font-size: 9px;
+            border: 1px solid currentColor;
+            padding: 1px 4px;
+        }
+        .what {
+            padding: 200px 60px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .what-grid {
+            grid-column: 1 / 13;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 40px;
+        }
+
+        .what-item {
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            cursor: pointer;
+            transition: transform 0.4s;
+        }
+
+        /* Asymmetrical Placement */
+        .what-item:nth-child(1) {
+            grid-column: 1 / 5;
+        }
+
+        .what-item:nth-child(2) {
+            grid-column: 6 / 10;
+            margin-top: 100px;
+        }
+
+        .what-item:nth-child(3) {
+            grid-column: 2 / 6;
+            margin-top: 60px;
+        }
+
+        .what-item:nth-child(4) {
+            grid-column: 8 / 12;
+            margin-top: -40px;
+        }
+
+        .what-item span {
+            font-family: var(--mono);
+            color: var(--muted);
+            font-size: 10px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .what-item h3 {
+            font-size: 40px;
+            font-weight: 500;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .what-item p {
+            font-family: var(--sans);
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 320px;
+        }
+
+        .what-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .what-item:hover p {
+            color: white;
+        }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-end;
+            padding: 40px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 600px;
+            height: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 60px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-content h2 {
+            font-size: 60px;
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            font-family: var(--mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            background: none;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        .project-item {
+            border-bottom: 1px solid var(--border);
+            padding: 40px 0;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-item:hover {
+            border-color: white;
+        }
+
+        .project-info h4 {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .project-info p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .project-tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+        }
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            overflow: hidden;
+            pointer-events: none;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: #00ff00;
+            transition: opacity 0.5s;
+        }
+
+        .data-stream {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            opacity: 0.6;
+            height: 100%;
+        }
+
+        .data-stream:nth-child(even) {
+            opacity: 0.3;
+            font-size: 8px;
+            margin-top: 50px;
+        }
+
+        .log-line {
+            white-space: nowrap;
+            line-height: 1;
+        }
+
+        #loader.glitch-active {
+            animation: screen-shake 0.05s infinite alternate;
+        }
+
+        #loader.glitch-active .log-line {
+            color: #ff3e3e;
+            text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff;
+        }
+
+        @keyframes screen-shake {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-1px, -1px) rotate(0.1deg);
+            }
+        }
+        .error-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 6vw;
+            font-weight: 700;
+            color: white;
+            background: #ff3e3e;
+            padding: 10px 40px;
+            text-transform: uppercase;
+            z-index: 10001;
+            display: none;
+            mix-blend-mode: difference;
+        }
+        .glitch-hover:hover {
+            animation: glitch-skew 0.2s infinite;
+            text-shadow: 2px 0 #ff3e3e, -2px 0 #00ffff;
+            position: relative;
+        }
+
+        @keyframes glitch-skew {
+            0% {
+                transform: skew(0.5deg);
+            }
+
+            20% {
+                transform: skew(-1deg);
+            }
+
+            40% {
+                transform: skew(1.5deg) translate(2px, 0);
+            }
+
+            60% {
+                transform: skew(0deg) translate(-1px, 0);
+            }
+
+            80% {
+                transform: skew(2deg);
+            }
+
+            100% {
+                transform: skew(0.5deg);
+            }
+        }
+
+        .btn:hover {
+            animation: glitch-skew 0.2s infinite;
+            box-shadow: 3px 0 #ff3e3e, -3px 0 #00ffff;
+        }
+
+        /* Whiteout Transition */
+        #loader.whiteout {
+            background: #fff !important;
+            transition: background 0.1s;
+        }
+
+        #loader.whiteout .data-stream,
+        #loader.whiteout .error-overlay {
+            display: none !important;
+        }
+
+        #loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        footer {
+            padding: 60px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 30px;
+            }
+
+            .links {
+                display: none;
+            }
+
+            .hero {
+                padding: 30px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 40px;
+            }
+
+            .what {
+                padding: 100px 30px;
+            }
+
+            .what-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .what-item:nth-child(n) {
+                grid-column: 1 / 2;
+                margin-top: 60px;
+            }
+
+            .modal-content {
+                padding: 30px;
+            }
+
+            .modal-content h2 {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loader">
+        <div class="data-stream" id="stream1"></div>
+        <div class="data-stream" id="stream2"></div>
+        <div class="data-stream" id="stream3"></div>
+        <div class="data-stream" id="stream4"></div>
+        <div class="error-overlay" id="errOverlay">CRITICAL FAILURE</div>
+    </div>
+
+    <div class="noise"></div>
+    <div class="aurora"></div>
+    <div class="cursor-glow" id="glow"></div>
+
+    <nav>
+        <div class="logo glitch-hover">EVEX</div>
+        <div class="links">
+            <a href="#" class="glitch-hover">About</a>
+            <a href="#" class="glitch-hover">Projects</a>
+            <a href="#" class="glitch-hover">Join</a>
+        </div>
+    </nav>
+
+    <div class="modal-overlay" id="ossModal">
+        <div class="modal-content">
+            <h2>OSS Projects</h2>
+            <button class="modal-close" onclick="closeModal()">Close</button>
+            <div class="project-list">
+                <a href="https://github.com/evex-dev/line.js" target="_blank" class="project-item">
+                    <div class="project-info">
+                        <h4>line.js</h4>
+                        <p>LINE Bot開発を加速させるTypeScriptライブラリ。</p>
+                    </div>
+                    <span class="project-tag">TypeScript</span>
+                </a>
+                <a href="https://github.com/evex-dev/hono.go" target="_blank" class="project-item">
+                    <div class="project-info">
+                        <h4>hono.go</h4>
+                        <p>Go言語で実装された、驚異的な速さを誇るAPIフレームワーク。</p>
+                    </div>
+                    <span class="project-tag">Go</span>
+                </a>
+                <a href="https://github.com/evex-dev" target="_blank" class="project-item">
+                    <div class="project-info">
+                        <h4>More on GitHub</h4>
+                        <p>その他のプロジェクトはGitHubをご確認ください。</p>
+                    </div>
+                    <span class="project-tag">OSS</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="glitch-hover" data-value="WE ARE EVEX">WE ARE EVEX</h1>
+            <div class="hero-meta">
+                <p>EST 2024 — DEVELOPER COMMUNITY</p>
+                <div class="buttons">
+                    <button class="btn" onclick="window.open('https://discord.gg/evex')">
+                        <span>Join Discord</span>
+                        <kbd class="btn-kbd">D</kbd>
+                    </button>
+                    <button class="btn" onclick="window.open('https://github.com/evex-dev')">
+                        <span>Explore GitHub</span>
+                        <kbd class="btn-kbd">G</kbd>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="what">
+        <div class="what-grid">
+            <div class="what-item" onclick="openModal()">
+                <span>// PROJECT_CATALOGUE_01</span>
+                <h3 class="glitch-hover" data-value="OPEN SOURCE">Open Source</h3>
+                <p>OSSプロジェクト</p>
+                <div style="margin-top: 40px; font-family: var(--mono); font-size: 10px; opacity: 0.5;">[ VIEW_DETAILS ]
+                </div>
+            </div>
+            <div class="what-item">
+                <span>// ARCH_STUDY_02</span>
+                <h3 class="glitch-hover" data-value="CTF">xxx</h3>
+                <p>xxx</p>
+            </div>
+            <div class="what-item">
+                <span>// FORWARD_RESEARCH_03</span>
+                <h3 class="glitch-hover" data-value="XXX">xxx</h3>
+                <p>xxx</p>
+            </div>
+            <div class="what-item">
+                <span>// NETWORK_OPS_04</span>
+                <h3 class="glitch-hover" data-value="XXX">xxx</h3>
+                <p>xxx</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div>Evex Developers</div>
+        <div>EST 2024</div>
+    </footer>
+
+    <script>
+        const glow = document.getElementById("glow")
+        const cards = document.querySelectorAll(".what-item")
+        const modal = document.getElementById("ossModal")
+
+        document.addEventListener("mousemove", e => {
+            glow.style.left = e.clientX + "px"
+            glow.style.top = e.clientY + "px"
+        })
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            });
+        });
+        function openModal() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (modal.classList.contains('active')) return;
+// リンク系
+            const key = e.key.toLowerCase();
+            if (key === 'd') {
+                window.open('https://discord.gg/evex', '_blank');
+            } else if (key === 'g') {
+                window.open('https://github.com/evex-dev', '_blank');
+            }
+        });
+
+        const loader = document.getElementById('loader');
+        const errOverlay = document.getElementById('errOverlay');
+        const streams = [
+            document.getElementById('stream1'),
+            document.getElementById('stream2'),
+            document.getElementById('stream3'),
+            document.getElementById('stream4')
+        ];
+
+        const charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>[]{}/\\|!@#$%^&*()_+=-";
+
+        function generateRandomString(len) {
+            let res = "";
+            for (let i = 0; i < len; i++) {
+                res += charSet[Math.floor(Math.random() * charSet.length)];
+            }
+            return res;
+        }
+
+        function addDataLine(stream) {
+            const line = document.createElement('div');
+            line.className = 'log-line';
+
+            const rand = Math.random();
+            if (rand < 0.2) {
+                line.textContent = `[ ${Math.random().toFixed(6)} ] ERROR_PANIC_0x${Math.floor(Math.random() * 100000).toString(16)}`;
+            } else if (rand < 0.4) {
+                line.textContent = generateRandomString(40);
+            } else if (rand < 0.7) {
+                line.textContent = `HEX ${Math.random().toString(16).slice(2, 20).toUpperCase()}`;
+            } else {
+                line.textContent = `MEMORY_DUMP: 0x${Math.floor(Math.random() * 1e9).toString(16)} >> COLLISION`;
+            }
+
+            stream.appendChild(line);
+            if (stream.children.length > 50) stream.removeChild(stream.firstChild);
+        }
+
+        let glitchPhase = 0;
+        function runStreams() {
+            if (glitchPhase < 120) {
+                streams.forEach(s => addDataLine(s));
+                glitchPhase++;
+
+                if (glitchPhase > 40) {
+                    loader.classList.add('glitch-active');
+                    if (Math.random() > 0.95) errOverlay.style.display = 'block';
+                    else errOverlay.style.display = 'none';
+                }
+
+                if (glitchPhase > 80) {
+                    loader.style.gridTemplateColumns = `repeat(${Math.floor(Math.random() * 6) + 2}, 1fr)`;
+                }
+
+                setTimeout(runStreams, Math.random() * 40 + 5);
+            } else {
+            // Finale
+                errOverlay.textContent = "SYSTEM_COLLAPSE";
+                errOverlay.style.display = 'block';
+                errOverlay.style.background = '#000';
+                errOverlay.style.color = '#fff';
+
+                setTimeout(() => {
+                    loader.classList.add('whiteout');
+                    setTimeout(() => {
+                        loader.classList.add('fade-out');
+                    }, 200);
+                }, 800);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(runStreams, 200);
+        });
+
+        const urlGlitches = [
+            "#ERROR_0xFB2", "#_GLITCH_", "#DECODING...", "#ACCESS_DENIED",
+            "#SYSTEM_HALT", "#REBOOT_REQD", "#CRC_ERR", "#000000"
+        ];
+
+        function triggerUrlGlitch() {
+            const originalPath = window.location.pathname;
+            const glitch = urlGlitches[Math.floor(Math.random() * urlGlitches.length)];
+
+
+            window.history.replaceState(null, '', glitch);
+
+
+            setTimeout(() => {
+                window.history.replaceState(null, '', originalPath);
+
+                setTimeout(triggerUrlGlitch, Math.random() * 25000 + 15000);
+            }, Math.random() * 400 + 400);
+        }
+
+        setTimeout(triggerUrlGlitch, 6000);
+
+
+        const scrambleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*$@0123456789";
+
+        function scrambleText(element) {
+            const originalText = element.dataset.value || element.textContent;
+            let iteration = 0;
+
+            const interval = setInterval(() => {
+                element.textContent = originalText
+                    .split("")
+                    .map((char, index) => {
+                        if (index < iteration) {
+                            return originalText[index];
+                        }
+                        return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+                    })
+                    .join("");
+
+                if (iteration >= originalText.length) {
+                    clearInterval(interval);
+                }
+
+                iteration += 1 / 3;
+            }, 30);
+        }
+
+        document.querySelectorAll('.glitch-hover[data-value]').forEach(el => {
+            el.addEventListener('mouseenter', () => scrambleText(el));
+        });
+    </script>
+
+</body>
+
+</html>

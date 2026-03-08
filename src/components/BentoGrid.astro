@@ -1,0 +1,99 @@
+<section class="what">
+	<div class="what-grid">
+		<div class="what-item" id="openOssModal">
+			<span>// PROJECT_CATALOGUE_01</span>
+			<h3 class="glitch-hover" data-value="OPEN SOURCE">Open Source</h3>
+			<p>OSSプロジェクト</p>
+			<div style="margin-top: 40px; font-family: var(--mono); font-size: 10px; opacity: 0.5;">[ VIEW_DETAILS ]</div>
+		</div>
+		<div class="what-item">
+			<span>// ARCH_STUDY_02</span>
+			<h3 class="glitch-hover" data-value="XXX">xxx</h3>
+			<p>xxx</p>
+		</div>
+		<div class="what-item">
+			<span>// FORWARD_RESEARCH_03</span>
+			<h3 class="glitch-hover" data-value="XXX">xxx</h3>
+			<p>xxx</p>
+		</div>
+		<div class="what-item">
+			<span>// NETWORK_OPS_04</span>
+			<h3 class="glitch-hover" data-value="XXX">xxx</h3>
+			<p>xxx</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.what {
+		padding: 200px 60px;
+		display: grid;
+		grid-template-columns: repeat(12, 1fr);
+		gap: 20px;
+	}
+
+	.what-grid {
+		grid-column: 1 / 13;
+		display: grid;
+		grid-template-columns: repeat(12, 1fr);
+		gap: 40px;
+	}
+
+	.what-item {
+		border-top: 1px solid var(--border);
+		padding-top: 20px;
+		cursor: pointer;
+		transition: transform 0.4s;
+	}
+
+	/* Asymmetrical Placement */
+	.what-item:nth-child(1) { grid-column: 1 / 5; }
+	.what-item:nth-child(2) { grid-column: 6 / 10; margin-top: 100px; }
+	.what-item:nth-child(3) { grid-column: 2 / 6; margin-top: 60px; }
+	.what-item:nth-child(4) { grid-column: 8 / 12; margin-top: -40px; }
+
+	.what-item span {
+		font-family: var(--mono);
+		color: var(--muted);
+		font-size: 10px;
+		display: block;
+		margin-bottom: 20px;
+	}
+
+	.what-item h3 {
+		font-size: 40px;
+		font-weight: 500;
+		letter-spacing: -1px;
+		margin-bottom: 20px;
+		text-transform: uppercase;
+	}
+
+	.what-item p {
+		font-family: var(--sans);
+		color: var(--muted);
+		font-size: 16px;
+		line-height: 1.5;
+		max-width: 320px;
+	}
+
+	.what-item:hover {
+		transform: translateY(-5px);
+	}
+
+	.what-item:hover p {
+		color: white;
+	}
+
+	@media (max-width: 768px) {
+		.what { padding: 100px 30px; }
+		.what-grid { grid-template-columns: 1fr; }
+		.what-item:nth-child(n) { grid-column: 1 / 2; margin-top: 60px; }
+	}
+</style>
+
+<script>
+	document.getElementById('openOssModal')?.addEventListener('click', () => {
+		// Event will be caught by the Modal component or global state
+		window.dispatchEvent(new CustomEvent('open-modal'));
+	});
+</script>

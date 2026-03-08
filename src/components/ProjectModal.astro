@@ -1,0 +1,144 @@
+<div class="modal-overlay" id="ossModal">
+	<div class="modal-content">
+		<h2>OSS Projects</h2>
+		<button class="modal-close" id="closeModal">Close</button>
+		<div class="project-list">
+			<a href="https://github.com/evex-dev/line.js" target="_blank" class="project-item">
+				<div class="project-info">
+					<h4>line.js</h4>
+					<p>LINE Bot開発を加速させる TypeScriptライブラリ。</p>
+				</div>
+				<span class="project-tag">TypeScript</span>
+			</a>
+			<a href="https://github.com/evex-dev/hono.go" target="_blank" class="project-item">
+				<div class="project-info">
+					<h4>hono.go</h4>
+					<p>Go言語で実装された、驚異的な速さを誇るAPIフレームワーク。</p>
+				</div>
+				<span class="project-tag">Go</span>
+			</a>
+			<a href="https://github.com/evex-dev" target="_blank" class="project-item">
+				<div class="project-info">
+					<h4>More on GitHub</h4>
+					<p>その他のプロジェクトはGitHubをご確認ください。</p>
+				</div>
+				<span class="project-tag">OSS</span>
+			</a>
+		</div>
+	</div>
+</div>
+
+<style>
+	.modal-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.95);
+		z-index: 1000;
+		display: flex;
+		justify-content: flex-end;
+		padding: 40px;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.5s;
+	}
+
+	.modal-overlay.active {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.modal-content {
+		width: 100%;
+		max-width: 600px;
+		height: 100%;
+		background: var(--bg);
+		border: 1px solid var(--border);
+		padding: 60px;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.modal-content h2 {
+		font-size: 60px;
+		font-weight: 700;
+		letter-spacing: -2px;
+		margin-bottom: 60px;
+		text-transform: uppercase;
+	}
+
+	.modal-close {
+		position: absolute;
+		top: 60px;
+		right: 60px;
+		font-family: var(--mono);
+		font-size: 11px;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		color: white;
+		background: none;
+		border: 1px solid var(--border);
+		padding: 8px 16px;
+		cursor: pointer;
+	}
+
+	.project-item {
+		border-bottom: 1px solid var(--border);
+		padding: 40px 0;
+		text-decoration: none;
+		color: inherit;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.project-item:hover {
+		border-color: white;
+	}
+
+	.project-info h4 {
+		font-size: 24px;
+		font-weight: 500;
+		margin-bottom: 10px;
+	}
+
+	.project-info p {
+		color: var(--muted);
+		font-size: 14px;
+	}
+
+	.project-tag {
+		font-family: var(--mono);
+		font-size: 10px;
+		color: var(--muted);
+		border: 1px solid var(--border);
+		padding: 4px 10px;
+	}
+
+	@media (max-width: 768px) {
+		.modal-content { padding: 30px; }
+		.modal-content h2 { font-size: 40px; }
+	}
+</style>
+
+<script>
+	const modal = document.getElementById('ossModal');
+	const closeBtn = document.getElementById('closeModal');
+
+	function openModal() {
+		modal?.classList.add('active');
+		document.body.style.overflow = 'hidden';
+	}
+
+	function closeModal() {
+		modal?.classList.remove('active');
+		document.body.style.overflow = '';
+	}
+
+	closeBtn?.addEventListener('click', closeModal);
+	modal?.addEventListener('click', (e) => {
+		if (e.target === modal) closeModal();
+	});
+
+	window.addEventListener('open-modal', openModal);
+</script>

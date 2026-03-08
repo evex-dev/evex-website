@@ -1,0 +1,124 @@
+<section class="hero">
+	<div class="hero-content">
+		<h1 class="glitch-hover" data-value="WE ARE EVEX">WE ARE EVEX</h1>
+		<div class="hero-meta">
+			<p>EST 2024 — DEVELOPER COMMUNITY</p>
+			<div class="buttons">
+				<button class="btn" id="joinDiscord">
+					<span>Join Discord</span>
+					<kbd class="btn-kbd">D</kbd>
+				</button>
+				<button class="btn" id="exploreGithub">
+					<span>Explore GitHub</span>
+					<kbd class="btn-kbd">G</kbd>
+				</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		height: 100vh;
+		padding: 0 60px;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-items: center;
+	}
+
+	.hero-content {
+		grid-column: 1 / 3;
+		max-width: 1200px;
+	}
+
+	.hero h1 {
+		font-family: var(--sans);
+		font-size: clamp(60px, 15vw, 200px);
+		font-weight: 700;
+		line-height: 0.85;
+		letter-spacing: -0.05em;
+		margin-bottom: 40px;
+		text-transform: uppercase;
+	}
+
+	.hero-meta {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		border-top: 1px solid var(--border);
+		padding-top: 20px;
+	}
+
+	.hero-meta p {
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--muted);
+		letter-spacing: 1px;
+		max-width: 300px;
+	}
+
+	.buttons {
+		display: flex;
+		gap: 15px;
+	}
+
+	.btn {
+		background: none;
+		border: 1px solid var(--border);
+		padding: 12px 24px;
+		color: white;
+		font-family: var(--mono);
+		font-size: 11px;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		cursor: pointer;
+		transition: all 0.3s;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.btn:hover {
+		border-color: white;
+		background: white;
+		color: black;
+		animation: glitch-skew 0.2s infinite;
+		box-shadow: 3px 0 #ff3e3e, -3px 0 #00ffff;
+	}
+
+	.btn-kbd {
+		opacity: 0.4;
+		font-size: 9px;
+		border: 1px solid currentColor;
+		padding: 1px 4px;
+	}
+
+	@media (max-width: 768px) {
+		.hero {
+			padding: 30px;
+		}
+		.hero-meta {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 40px;
+		}
+	}
+</style>
+
+<script>
+	document.getElementById('joinDiscord')?.addEventListener('click', () => {
+		window.open('https://discord.gg/evex', '_blank');
+	});
+	document.getElementById('exploreGithub')?.addEventListener('click', () => {
+		window.open('https://github.com/evex-dev', '_blank');
+	});
+
+	document.addEventListener('keydown', (e) => {
+		const key = e.key.toLowerCase();
+		if (key === 'd') {
+			window.open('https://discord.gg/evex', '_blank');
+		} else if (key === 'g') {
+			window.open('https://github.com/evex-dev', '_blank');
+		}
+	});
+</script>
