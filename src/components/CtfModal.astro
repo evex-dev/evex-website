@@ -1,0 +1,157 @@
+<div class="modal-overlay" id="ctfModal">
+	<div class="modal-content">
+		<h2>CTF</h2>
+		<button class="modal-close" id="closeCtfModal">[ CLOSE ]</button>
+		<div class="ctf-list">
+			<div class="ctf-item">
+				<div class="ctf-info">
+					<h4>SECCON CTF 2024</h4>
+					<p>国内最大規模のCTF大会 — 国内1位</p>
+				</div>
+				<span class="ctf-tag">1st Place</span>
+			</div>
+			<div class="ctf-item">
+				<div class="ctf-info">
+					<h4>TSG CTF 2024</h4>
+					<p>東京大学 TSG 主催 CTF — 優勝</p>
+				</div>
+				<span class="ctf-tag">1st Place</span>
+			</div>
+			<div class="ctf-item">
+				<div class="ctf-info">
+					<h4>HITCON CTF 2024</h4>
+					<p>台湾 HITCON 主催 国際CTF — Top 10</p>
+				</div>
+				<span class="ctf-tag">Top 10</span>
+			</div>
+			<div class="ctf-item">
+				<div class="ctf-info">
+					<h4>DEF CON CTF 2024</h4>
+					<p>世界最高峰のCTF大会 — 予選突破</p>
+				</div>
+				<span class="ctf-tag">Qualifier</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.modal-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.95);
+		z-index: 1000;
+		display: flex;
+		justify-content: flex-end;
+		padding: 40px;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.5s;
+	}
+
+	.modal-overlay.active {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.modal-content {
+		width: 100%;
+		max-width: 600px;
+		height: 100%;
+		background: var(--bg);
+		border: 1px solid var(--border);
+		padding: 60px;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+	}
+
+	.modal-content h2 {
+		font-size: 60px;
+		font-weight: 700;
+		letter-spacing: -2px;
+		margin-bottom: 60px;
+		text-transform: uppercase;
+	}
+
+	.modal-close {
+		position: absolute;
+		top: 60px;
+		right: 60px;
+		font-family: var(--mono);
+		font-size: 11px;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		color: white;
+		background: none;
+		border: 1px solid var(--border);
+		padding: 8px 16px;
+		cursor: pointer;
+	}
+
+	.modal-close:hover {
+		border-color: white;
+	}
+
+	.ctf-item {
+		border-bottom: 1px solid var(--border);
+		padding: 40px 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		transition: border-color 0.2s;
+	}
+
+	.ctf-item:hover {
+		border-color: white;
+	}
+
+	.ctf-info h4 {
+		font-size: 24px;
+		font-weight: 500;
+		margin-bottom: 10px;
+	}
+
+	.ctf-info p {
+		color: var(--muted);
+		font-size: 14px;
+	}
+
+	.ctf-tag {
+		font-family: var(--mono);
+		font-size: 10px;
+		color: var(--muted);
+		border: 1px solid var(--border);
+		padding: 4px 10px;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 768px) {
+		.modal-content { padding: 30px; }
+		.modal-content h2 { font-size: 40px; }
+		.modal-close { top: 30px; right: 30px; }
+	}
+</style>
+
+<script>
+	const ctfModal = document.getElementById('ctfModal');
+	const closeCtfBtn = document.getElementById('closeCtfModal');
+
+	function openCtfModal() {
+		ctfModal?.classList.add('active');
+		document.body.style.overflow = 'hidden';
+	}
+
+	function closeCtfModal() {
+		ctfModal?.classList.remove('active');
+		document.body.style.overflow = '';
+	}
+
+	closeCtfBtn?.addEventListener('click', closeCtfModal);
+	ctfModal?.addEventListener('click', (e) => {
+		if (e.target === ctfModal) closeCtfModal();
+	});
+
+	window.addEventListener('open-ctf-modal', openCtfModal);
+</script>

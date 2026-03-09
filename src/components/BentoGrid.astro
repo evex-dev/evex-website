@@ -6,10 +6,11 @@
 			<p>OSSプロジェクト</p>
 			<div style="margin-top: 40px; font-family: var(--mono); font-size: 10px; opacity: 0.5;">[ VIEW_DETAILS ]</div>
 		</div>
-		<div class="what-item">
-			<span>// ARCH_STUDY_02</span>
-			<h3 class="glitch-hover" data-value="XXX">xxx</h3>
-			<p>xxx</p>
+		<div class="what-item" id="openCtfModal">
+			<span>// SECURITY_OPS_02</span>
+			<h3 class="glitch-hover" data-value="CTF">CTF</h3>
+			<p>セキュリティ競技</p>
+			<div style="margin-top: 40px; font-family: var(--mono); font-size: 10px; opacity: 0.5;">[ VIEW_DETAILS ]</div>
 		</div>
 		<div class="what-item">
 			<span>// FORWARD_RESEARCH_03</span>
@@ -93,7 +94,10 @@
 
 <script>
 	document.getElementById('openOssModal')?.addEventListener('click', () => {
-		// Event will be caught by the Modal component or global state
 		window.dispatchEvent(new CustomEvent('open-modal'));
+	});
+
+	document.getElementById('openCtfModal')?.addEventListener('click', () => {
+		window.dispatchEvent(new CustomEvent('open-ctf-modal'));
 	});
 </script>
